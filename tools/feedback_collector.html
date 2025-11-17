@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户反馈收集工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .rating-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .rating-btn:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .rating-btn.active {
+            border-color: #2563eb;
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        .feedback-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .feedback-item {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .feedback-module {
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .feedback-time {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .feedback-rating {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .rating-5 { background: #d1fae5; color: #065f46; }
+        .rating-4 { background: #dbeafe; color: #1e40af; }
+        .rating-3 { background: #fef3c7; color: #92400e; }
+        .rating-2 { background: #fed7aa; color: #9a3412; }
+        .rating-1 { background: #fee2e2; color: #991b1b; }
+
+        .feedback-content {
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .feedback-type {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            width: 100px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .chart-bar-container {
+            flex: 1;
+            height: 24px;
+            background: #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 0 12px;
+        }
+
+        .chart-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            transition: width 0.5s ease;
+        }
+
+        .chart-value {
+            width: 50px;
+            text-align: right;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 用户反馈收集系统</h1>
+
+        <div class="grid">
+            <!-- 反馈表单 -->
+            <div class="card">
+                <h2>提交反馈</h2>
+
+                <form id="feedbackForm">
+                    <div class="form-group">
+                        <label class="form-label">选择模块</label>
+                        <select class="form-select" id="module" required>
+                            <option value="">请选择...</option>
+                            <option value="boss">Boss 系统</option>
+                            <option value="merchant">Merchant 系统</option>
+                            <option value="agent">Agent 系统</option>
+                            <option value="gateway">Gateway 系统</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">反馈类型</label>
+                        <select class="form-select" id="feedbackType" required>
+                            <option value="">请选择...</option>
+                            <option value="bug">🐛 Bug 报告</option>
+                            <option value="feature">💡 功能建议</option>
+                            <option value="performance">⚡ 性能问题</option>
+                            <option value="ui">🎨 UI/UX 改进</option>
+                            <option value="other">📌 其他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">满意度评分</label>
+                        <div class="rating-group">
+                            <button type="button" class="rating-btn" data-rating="1">😞 1</button>
+                            <button type="button" class="rating-btn" data-rating="2">😐 2</button>
+                            <button type="button" class="rating-btn" data-rating="3">🙂 3</button>
+                            <button type="button" class="rating-btn" data-rating="4">😊 4</button>
+                            <button type="button" class="rating-btn" data-rating="5">😄 5</button>
+                        </div>
+                        <input type="hidden" id="rating" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">详细描述</label>
+                        <textarea class="form-textarea" id="content" placeholder="请详细描述您的反馈..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">联系方式（可选）</label>
+                        <input type="text" class="form-input" id="contact" placeholder="邮箱或电话">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">提交反馈</button>
+                </form>
+            </div>
+
+            <!-- 统计面板 -->
+            <div class="card">
+                <h2>反馈统计</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalFeedback">0</div>
+                        <div class="stat-label">总反馈数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgRating">0.0</div>
+                        <div class="stat-label">平均评分</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="todayFeedback">0</div>
+                        <div class="stat-label">今日反馈</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 16px; color: #374151;">评分分布</h3>
+                    <div id="ratingChart"></div>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 12px;">
+                    <button class="btn btn-success" onclick="exportFeedback()">导出数据</button>
+                    <button class="btn btn-primary" onclick="clearFeedback()" style="background: #dc2626;">清空数据</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 反馈列表 -->
+        <div class="card" style="margin-top: 20px;">
+            <h2>最近反馈</h2>
+            <div class="feedback-list" id="feedbackList">
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <p>暂无反馈数据</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 反馈数据存储
+        let feedbackData = JSON.parse(localStorage.getItem('feedbackData') || '[]');
+
+        // 评分按钮事件
+        document.querySelectorAll('.rating-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('rating').value = this.dataset.rating;
+            });
+        });
+
+        // 表单提交
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const feedback = {
+                id: Date.now(),
+                timestamp: new Date().toISOString(),
+                module: document.getElementById('module').value,
+                type: document.getElementById('feedbackType').value,
+                rating: parseInt(document.getElementById('rating').value),
+                content: document.getElementById('content').value,
+                contact: document.getElementById('contact').value
+            };
+
+            feedbackData.unshift(feedback);
+            localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
+
+            // 重置表单
+            this.reset();
+            document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
+
+            // 刷新显示
+            updateDisplay();
+
+            alert('✅ 反馈提交成功！感谢您的反馈。');
+        });
+
+        // 更新显示
+        function updateDisplay() {
+            updateStats();
+            updateRatingChart();
+            updateFeedbackList();
+        }
+
+        // 更新统计
+        function updateStats() {
+            const total = feedbackData.length;
+            document.getElementById('totalFeedback').textContent = total;
+
+            if (total > 0) {
+                const avgRating = feedbackData.reduce((sum, f) => sum + f.rating, 0) / total;
+                document.getElementById('avgRating').textContent = avgRating.toFixed(1);
+
+                const today = new Date().toDateString();
+                const todayCount = feedbackData.filter(f =>
+                    new Date(f.timestamp).toDateString() === today
+                ).length;
+                document.getElementById('todayFeedback').textContent = todayCount;
+            } else {
+                document.getElementById('avgRating').textContent = '0.0';
+                document.getElementById('todayFeedback').textContent = '0';
+            }
+        }
+
+        // 更新评分图表
+        function updateRatingChart() {
+            const ratingCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+            feedbackData.forEach(f => ratingCounts[f.rating]++);
+
+            const maxCount = Math.max(...Object.values(ratingCounts), 1);
+            const chartHTML = [5, 4, 3, 2, 1].map(rating => {
+                const count = ratingCounts[rating];
+                const percentage = (count / maxCount) * 100;
+                return `
+                    <div class="chart-bar">
+                        <div class="chart-label">${rating} 星</div>
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="chart-value">${count}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('ratingChart').innerHTML = chartHTML;
+        }
+
+        // 更新反馈列表
+        function updateFeedbackList() {
+            const listContainer = document.getElementById('feedbackList');
+
+            if (feedbackData.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p>暂无反馈数据</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const listHTML = feedbackData.slice(0, 20).map(f => {
+                const typeLabels = {
+                    bug: '🐛 Bug',
+                    feature: '💡 功能',
+                    performance: '⚡ 性能',
+                    ui: '🎨 UI/UX',
+                    other: '📌 其他'
+                };
+
+                const moduleLabels = {
+                    boss: 'Boss',
+                    merchant: 'Merchant',
+                    agent: 'Agent',
+                    gateway: 'Gateway'
+                };
+
+                return `
+                    <div class="feedback-item">
+                        <div class="feedback-header">
+                            <span class="feedback-module">${moduleLabels[f.module] || f.module}</span>
+                            <span class="feedback-time">${new Date(f.timestamp).toLocaleString()}</span>
+                        </div>
+                        <div class="feedback-rating rating-${f.rating}">${'⭐'.repeat(f.rating)} (${f.rating}/5)</div>
+                        <div class="feedback-content">${f.content}</div>
+                        <div class="feedback-type">${typeLabels[f.type] || f.type}</div>
+                    </div>
+                `;
+            }).join('');
+
+            listContainer.innerHTML = listHTML;
+        }
+
+        // 导出反馈
+        function exportFeedback() {
+            if (feedbackData.length === 0) {
+                alert('⚠️ 暂无数据可导出');
+                return;
+            }
+
+            const blob = new Blob([JSON.stringify(feedbackData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `feedback-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('✅ 反馈数据已导出');
+        }
+
+        // 清空反馈
+        function clearFeedback() {
+            if (!confirm('⚠️ 确定要清空所有反馈数据吗？此操作不可恢复！')) {
+                return;
+            }
+
+            feedbackData = [];
+            localStorage.setItem('feedbackData', JSON.stringify(feedbackData));
+            updateDisplay();
+
+            alert('✅ 反馈数据已清空');
+        }
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
