@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boss 管理后台 - dongfeng-pay</title>
+    <link rel="stylesheet" href="../../frontend-modern/css/components.css">
+    <link rel="stylesheet" href="../../frontend-modern/css/admin-layout.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="admin-navbar">
+        <div class="navbar-brand">
+            <span class="brand-icon">💳</span>
+            <span class="brand-text">聚合支付管理系统 - Boss</span>
+        </div>
+
+        <div class="navbar-right">
+            <!-- 用户下拉菜单 -->
+            <div class="user-dropdown">
+                <button class="user-btn" id="userMenuBtn">
+                    <span class="user-icon">👤</span>
+                    <span class="user-name">你好！管理员</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="#" class="dropdown-item" id="changePasswordBtn">
+                        <span class="item-icon">⚙</span>
+                        <span>更改密码</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" id="logoutBtn">
+                        <span class="item-icon">⏻</span>
+                        <span>退出登录</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <div class="admin-container">
+        <!-- 左侧边栏 -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <!-- 控制面板 -->
+                <div class="menu-section">
+                    <a href="#" class="menu-item menu-item-single" data-page="main.html">
+                        <span class="menu-icon">🏠</span>
+                        <span class="menu-title">控制面板</span>
+                    </a>
+                </div>
+
+                <!-- 权限控制 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="permissions">
+                        <span class="menu-icon">🔧</span>
+                        <span class="menu-title">权限控制</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-permissions">
+                        <a href="#" class="submenu-item" data-page="role.html">角色管理</a>
+                        <a href="#" class="submenu-item" data-page="operator.html">操作员管理</a>
+                    </div>
+                </div>
+
+                <!-- 通道管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="roads">
+                        <span class="menu-icon">🛣</span>
+                        <span class="menu-title">通道管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-roads">
+                        <a href="#" class="submenu-item" data-page="road.html">添加通道</a>
+                        <a href="#" class="submenu-item" data-page="road_pool.html">轮询池</a>
+                    </div>
+                </div>
+
+                <!-- 商户管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="merchants">
+                        <span class="menu-icon">👥</span>
+                        <span class="menu-title">商户管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-merchants">
+                        <a href="#" class="submenu-item" data-page="merchant.html">商户配置</a>
+                    </div>
+                </div>
+
+                <!-- 代理管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="agents">
+                        <span class="menu-icon">🎯</span>
+                        <span class="menu-title">代理管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-agents">
+                        <a href="#" class="submenu-item" data-page="create_agent.html">创建代理</a>
+                        <a href="#" class="submenu-item" data-page="agent_to_merchant.html">代理商户映射列表</a>
+                    </div>
+                </div>
+
+                <!-- 资金管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="accounts">
+                        <span class="menu-icon">📂</span>
+                        <span class="menu-title">资金管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-accounts">
+                        <a href="#" class="submenu-item" data-page="account.html">账户钱包</a>
+                        <a href="#" class="submenu-item" data-page="account_history.html">动账记录</a>
+                    </div>
+                </div>
+
+                <!-- 订单管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="orders">
+                        <span class="menu-icon">📖</span>
+                        <span class="menu-title">订单管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-orders">
+                        <a href="#" class="submenu-item" data-page="order_info.html">实时订单</a>
+                        <a href="#" class="submenu-item" data-page="order_profit.html">订单收益</a>
+                    </div>
+                </div>
+
+                <!-- 代付管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="payfor">
+                        <span class="menu-icon">🏦</span>
+                        <span class="menu-title">代付管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-payfor">
+                        <a href="#" class="submenu-item" data-page="merchant_payfor.html">商户下发</a>
+                        <a href="#" class="submenu-item" data-page="self_payfor.html">任意打款</a>
+                        <a href="#" class="submenu-item" data-page="payfor_record.html">代付列表</a>
+                        <a href="#" class="submenu-item" data-page="bank_card.html">银行卡管理</a>
+                    </div>
+                </div>
+
+                <!-- 分润管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="profits">
+                        <span class="menu-icon">💰</span>
+                        <span class="menu-title">分润管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-profits">
+                        <a href="#" class="submenu-item" data-page="platform_profit.html">平台利润</a>
+                        <a href="#" class="submenu-item" data-page="agent_profit.html">代理利润</a>
+                    </div>
+                </div>
+
+                <!-- 自助服务 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="self-service">
+                        <span class="menu-icon">✏</span>
+                        <span class="menu-title">自助服务</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-self-service">
+                        <a href="#" class="submenu-item" data-page="self_notify.html">批量给下游回调</a>
+                        <a href="#" class="submenu-item" data-page="self_plus_sub.html">自定义加减款</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区 -->
+        <main class="admin-main">
+            <div class="main-content" id="mainContent">
+                <!-- 动态加载的页面内容 -->
+                <div class="welcome-screen">
+                    <h2>欢迎使用 Boss 管理系统</h2>
+                    <p>请从左侧菜单选择功能模块</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="admin-footer">
+        <div class="footer-content">
+            版权所有 © 2025 dongfeng-pay | Boss 管理系统
+        </div>
+    </footer>
+
+    <!-- 更改密码模态框 -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal modal-medium">
+            <div class="modal-header">
+                <h3 class="modal-title">用户密码更改</h3>
+                <button class="modal-close" id="closePasswordModal">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--danger); text-align: center; margin-bottom: 20px;">
+                    温馨提示：新密码为8~16个字符，字母和数字组成。
+                </p>
+                <form id="passwordForm" class="modern-form">
+                    <div class="form-group">
+                        <label class="form-label">
+                            旧密码<span class="required">*</span>
+                        </label>
+                        <div class="form-input-wrapper">
+                            <input type="password" class="form-input" id="oldPassword" required>
+                            <span class="form-error" id="oldPasswordError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            新密码<span class="required">*</span>
+                        </label>
+                        <div class="form-input-wrapper">
+                            <input type="password" class="form-input" id="newPassword" required>
+                            <span class="form-error" id="newPasswordError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            再次输入新密码<span class="required">*</span>
+                        </label>
+                        <div class="form-input-wrapper">
+                            <input type="password" class="form-input" id="confirmPassword" required>
+                            <span class="form-error" id="confirmPasswordError"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="cancelPasswordBtn">取消</button>
+                <button type="button" class="btn btn-primary" id="savePasswordBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="../../frontend-modern/js/components.js"></script>
+    <script src="../static/js/utils.js"></script>
+    <script src="../../frontend-modern/js/admin-layout.js"></script>
+</body>
+</html>

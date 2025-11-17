@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent 代理后台 - dongfeng-pay</title>
+    <link rel="stylesheet" href="../../frontend-modern/css/components.css">
+    <link rel="stylesheet" href="../../frontend-modern/css/admin-layout.css">
+    <style>
+        /* Agent 主题色覆盖 */
+        :root {
+            --primary: #7c3aed;
+            --primary-hover: #6d28d9;
+        }
+
+        .admin-navbar {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .navbar-brand {
+            color: white;
+        }
+
+        .user-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .user-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="admin-navbar">
+        <div class="navbar-brand">
+            <span class="brand-icon">🎯</span>
+            <span class="brand-text">聚合支付代理系统</span>
+        </div>
+
+        <div class="navbar-right">
+            <div class="user-dropdown">
+                <button class="user-btn" id="userMenuBtn">
+                    <span class="user-icon">👤</span>
+                    <span class="user-name">你好！代理</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="#" class="dropdown-item" id="changePasswordBtn">
+                        <span class="item-icon">⚙</span>
+                        <span>更改密码</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" id="logoutBtn">
+                        <span class="item-icon">⏻</span>
+                        <span>退出登录</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <div class="admin-container">
+        <!-- 左侧边栏 -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <!-- 首页 -->
+                <div class="menu-section">
+                    <a href="#" class="menu-item menu-item-single" data-page="index.html">
+                        <span class="menu-icon">🏠</span>
+                        <span class="menu-title">首页</span>
+                    </a>
+                </div>
+
+                <!-- 商户管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="merchant">
+                        <span class="menu-icon">👥</span>
+                        <span class="menu-title">商户管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-merchant">
+                        <a href="#" class="submenu-item" data-page="merchant.html">商户列表</a>
+                    </div>
+                </div>
+
+                <!-- 交易管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="trade">
+                        <span class="menu-icon">💳</span>
+                        <span class="menu-title">交易管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-trade">
+                        <a href="#" class="submenu-item" data-page="trade_record.html">交易记录</a>
+                        <a href="#" class="submenu-item" data-page="recharge_record.html">充值记录</a>
+                        <a href="#" class="submenu-item" data-page="history_record.html">历史记录</a>
+                    </div>
+                </div>
+
+                <!-- 客服管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="service">
+                        <span class="menu-icon">📞</span>
+                        <span class="menu-title">客服管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-service">
+                        <a href="#" class="submenu-item" data-page="complaint_record.html">投诉记录</a>
+                    </div>
+                </div>
+
+                <!-- 账户管理 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="account">
+                        <span class="menu-icon">👤</span>
+                        <span class="menu-title">账户管理</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-account">
+                        <a href="#" class="submenu-item" data-page="show_userInfo.html">查看用户信息</a>
+                        <a href="#" class="submenu-item" data-page="modify_userInfo.html">修改用户信息</a>
+                    </div>
+                </div>
+
+                <!-- 支付方式 -->
+                <div class="menu-section">
+                    <button class="menu-item menu-item-parent" data-menu="payment">
+                        <span class="menu-icon">💰</span>
+                        <span class="menu-title">支付方式</span>
+                        <span class="menu-arrow">▶</span>
+                    </button>
+                    <div class="submenu" id="menu-payment">
+                        <a href="#" class="submenu-item" data-page="pay_way.html">支付方式管理</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区 -->
+        <main class="admin-main">
+            <div class="main-content" id="mainContent">
+                <div class="welcome-screen">
+                    <h2>欢迎使用代理管理系统</h2>
+                    <p>请从左侧菜单选择功能模块</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="admin-footer">
+        <div class="footer-content">
+            版权所有 © 2025 dongfeng-pay | 代理管理系统
+        </div>
+    </footer>
+
+    <!-- 更改密码模态框 -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal modal-medium">
+            <div class="modal-header">
+                <h3 class="modal-title">用户密码更改</h3>
+                <button class="modal-close" id="closePasswordModal">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--danger); text-align: center; margin-bottom: 20px;">
+                    温馨提示：新密码为8~16个字符，字母和数字组成。
+                </p>
+                <form id="passwordForm" class="modern-form">
+                    <div class="form-group">
+                        <label class="form-label">
+                            旧密码<span class="required">*</span>
+                        </label>
+                        <div class="form-input-wrapper">
+                            <input type="password" class="form-input" id="oldPassword" required>
+                            <span class="form-error" id="oldPasswordError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            新密码<span class="required">*</span>
+                        </label>
+                        <div class="form-input-wrapper">
+                            <input type="password" class="form-input" id="newPassword" required>
+                            <span class="form-error" id="newPasswordError"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            再次输入新密码<span class="required">*</span>
+                        </label>
+                        <div class="form-input-wrapper">
+                            <input type="password" class="form-input" id="confirmPassword" required>
+                            <span class="form-error" id="confirmPasswordError"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="cancelPasswordBtn">取消</button>
+                <button type="button" class="btn btn-primary" id="savePasswordBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../frontend-modern/js/components.js"></script>
+    <script src="../static/js/utils.js"></script>
+    <script src="../../frontend-modern/js/admin-layout.js"></script>
+</body>
+</html>
