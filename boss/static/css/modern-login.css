@@ -1,0 +1,375 @@
+/**
+ * dongfeng-pay 管理后台登录页面样式
+ * 纯 CSS3 实现，无需任何框架依赖
+ */
+
+/* ===== CSS 变量定义 ===== */
+:root {
+    /* 颜色系统 */
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-active: #1e40af;
+    --danger-color: #dc2626;
+    --success-color: #16a34a;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-light: #9ca3af;
+
+    /* 背景颜色 */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-gradient-start: #667eea;
+    --bg-gradient-end: #764ba2;
+
+    /* 边框和阴影 */
+    --border-color: #e5e7eb;
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+    /* 间距 */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* 过渡动画 */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 250ms ease-in-out;
+    --transition-slow: 350ms ease-in-out;
+
+    /* 字体 */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+                   'Helvetica Neue', 'Arial', 'Noto Sans', sans-serif,
+                   'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+                   'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei';
+}
+
+/* ===== 全局样式重置 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-primary);
+    line-height: 1.5;
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ===== 登录容器布局 ===== */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: var(--spacing-lg);
+}
+
+.login-box {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 420px;
+    padding: var(--spacing-xl);
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== 登录头部 ===== */
+.login-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.login-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.login-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* ===== 表单样式 ===== */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    outline: none;
+    transition: all var(--transition-base);
+}
+
+.form-input::placeholder {
+    color: var(--text-light);
+}
+
+.form-input:hover {
+    border-color: var(--primary-color);
+}
+
+.form-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-input:disabled {
+    background: var(--bg-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ===== 验证码容器 ===== */
+.captcha-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--spacing-md);
+    align-items: start;
+}
+
+.captcha-input {
+    grid-column: 1;
+}
+
+.captcha-image {
+    grid-column: 2;
+    height: 46px;
+    width: 120px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    object-fit: cover;
+}
+
+.captcha-image:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: scale(1.02);
+}
+
+.captcha-image:active {
+    transform: scale(0.98);
+}
+
+/* ===== 错误提示 ===== */
+.error-message {
+    min-height: 20px;
+    font-size: 0.875rem;
+    color: var(--danger-color);
+    display: none;
+    animation: shake 0.3s ease-in-out;
+}
+
+.error-message:not(:empty) {
+    display: block;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ===== 复选框样式 ===== */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.checkbox-label span {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ===== 按钮样式 ===== */
+.btn {
+    position: relative;
+    width: 100%;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    outline: none;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--primary-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+    background: var(--primary-active);
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ===== 加载动画 ===== */
+.loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== 页脚 ===== */
+.login-footer {
+    margin-top: var(--spacing-xl);
+    text-align: center;
+}
+
+.copyright {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 640px) {
+    .login-box {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-md);
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+    }
+
+    .captcha-container {
+        grid-template-columns: 1fr;
+    }
+
+    .captcha-image {
+        width: 100%;
+        height: 50px;
+    }
+}
+
+/* ===== 暗黑模式支持 (可选) ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-light: #9ca3af;
+        --bg-primary: #1f2937;
+        --bg-secondary: #111827;
+        --border-color: #374151;
+    }
+
+    body {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+}
+
+/* ===== 无障碍辅助 ===== */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ===== 打印样式 ===== */
+@media print {
+    body {
+        background: white;
+    }
+
+    .login-container {
+        min-height: auto;
+    }
+
+    .login-box {
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
+}
