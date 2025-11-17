@@ -1,18 +1,19 @@
 /***************************************************
- ** @Desc : This file for ...
+ ** @Desc : Configuration file
  ** @Time : 2019/10/26 15:30
  ** @Author : yuebin
  ** @File : conf_pro
- ** @Last Modified by : yuebin
- ** @Last Modified time: 2019/10/26 15:30
+ ** @Last Modified by : Claude AI
+ ** @Last Modified time: 2025-11-17
  ** @Software: GoLand
+ ** @Update : Upgraded to PostgreSQL 18
 ****************************************************/
 package conf
 
 const (
 	DB_HOST     = "localhost"
-	DB_PORT     = "3306"
-	DB_USER     = "root"
+	DB_PORT     = "5432"         // PostgreSQL 默认端口
+	DB_USER     = "postgres"     // PostgreSQL 默认用户
 	DB_PASSWORD = "Kyb^15273031604"
 	DB_BASE     = "juhe_pay"
 )

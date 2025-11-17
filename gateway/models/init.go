@@ -1,11 +1,12 @@
 /***************************************************
- ** @Desc : This file for ...
+ ** @Desc : Database initialization for PostgreSQL
  ** @Time : 2019/8/9 13:48
  ** @Author : yuebin
  ** @File : init
- ** @Last Modified by : yuebin
- ** @Last Modified time: 2019/8/9 13:48
+ ** @Last Modified by : Claude AI
+ ** @Last Modified time: 2025-11-17
  ** @Software: GoLand
+ ** @Update : Upgraded to PostgreSQL 18
 ****************************************************/
 package models
 
@@ -18,12 +19,13 @@ import (
 	"gateway/models/notify"
 	"gateway/models/order"
 	"gateway/models/payfor"
+	"gateway/models/refund"
 	"gateway/models/road"
 	"gateway/models/system"
 	"gateway/models/user"
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 func init() {
@@ -33,13 +35,20 @@ func init() {
 	dbBase := conf.DB_BASE
 	dbPort := conf.DB_PORT
 
-	link := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", dbUser, dbPassword, dbHost, dbPort, dbBase)
+	// PostgreSQL 连接字符串格式
+	// postgresql://username:password@host:port/database?sslmode=disable
+	link := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		dbHost, dbPort, dbUser, dbPassword, dbBase)
 
-	logs.Info("mysql init.....", link)
+	logs.Info("PostgreSQL init.....", link)
 
-	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", link)
-	orm.RegisterModel(new(user.UserInfo),
+	// 注册 PostgreSQL 驱动
+	orm.RegisterDriver("postgres", orm.DRPostgres)
+	orm.RegisterDataBase("default", "postgres", link)
+
+	// 注册所有模型（包括新增的退款模型）
+	orm.RegisterModel(
+		new(user.UserInfo),
 		new(system.MenuInfo),
 		new(system.SecondMenuInfo),
 		new(system.PowerInfo),
@@ -57,5 +66,10 @@ func init() {
 		new(order.OrderSettleInfo),
 		new(notify.NotifyInfo),
 		new(merchant.MerchantLoadInfo),
-		new(payfor.PayforInfo))
+		new(payfor.PayforInfo),
+		new(refund.RefundInfo),
+	)
+
+	// 开发环境自动同步表结构（生产环境建议注释掉）
+	// orm.RunSyncdb("default", false, true)
 }
